@@ -4,9 +4,12 @@
 __global__ void invert_kernel(unsigned char* image, int width, int height) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
 
-    if(idx < width * height * 4 && idx%4 != 3) {
+    if(idx < width * height) {
         // printf("%d => %d\n", idx, (int)image[idx]);
-        image[idx] = (unsigned char)(255 - (int)image[idx]);
+        int curIdx = idx*4;
+        image[curIdx] = 255 - (int)image[curIdx];
+        image[curIdx + 1] = 255 - (int)image[curIdx + 1];
+        image[curIdx + 2] = 255 - (int)image[curIdx + 2];
     }
 }
 // image_input, image_output are device pointers (i.e. pointers to memory on the GPU)
